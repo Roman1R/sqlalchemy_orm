@@ -2,6 +2,8 @@ from flask import Flask, render_template
 import sqlalchemy
 import sqlalchemy.orm as orm
 from sqlalchemy.orm import Session
+import datetime
+
 
 # ----------------> ORM CHAPTER START<-----------
 SqlAlchemyBase = orm.declarative_base()
@@ -44,7 +46,8 @@ class Job(SqlAlchemyBase):
     user = orm.relationship('User')
 
     def __repr__(self):
-        return self.team_leader, self.job, self.work_size, self.collaborators, self.is_finished
+        return (self.id, self.team_leader, self.job, self.work_size, self.collaborators,
+                self.is_finished)
 
 
 class User(SqlAlchemyBase):
@@ -62,7 +65,8 @@ class User(SqlAlchemyBase):
     jobs = orm.relationship("Job", back_populates='user')
 
     def __repr__(self):
-        return f"<Colonist> {self.id} {self.surname} {self.name}"
+        return (self.id, self.surname, self.name, self.age, self.position, self.speciality, self.address,
+                self.hashed_password, self.modified_date)
 
 
 # ----------------> ORM CHAPTER END <-----------
@@ -75,11 +79,12 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 @app.route("/")
 def distribution():
-    params = {"users": []}
-    global_init(input())
+    params = {}
+    global_init("base.sqlite")
     db_sess = create_session()
-    for user in db_sess.query(User).all():
-        params["users"] += user
+    params["users"] = db_sess.query(User).all()
+    params["len"] = len(params["users"])
+    params["jobs"] = db_sess.query(Job).all()
     return render_template("index.html", **params)
 
 

@@ -5,9 +5,9 @@
 
 {% block content %}
 <h2 style="text-align: center">WORKS LOG</h2>
-{% for user in users %}
-    <h2 style="text-align: center">ACTION {{ user.id }}</h2>
-    <table style="margin: auto; table-layout: fixed; border-collapse: collapse">
+{% for i in range(len) %}
+    <h2 style="text-align: left">ACTION #{{ users[i].id }}</h2>
+    <table style="margin: auto; border-spacing: 0;  table-layout: fixed">
         <thead>
             <tr style="background: #4e5254">
                 <th>Title of activity</th>
@@ -19,11 +19,11 @@
         </thead>
         <tbody>
             <tr style="background: #adb4b8">
-                <th>{{ user.job }}</th>
-                <th>{{ user.team_leader }}</th>
-                <th>{{ user.start_date }} {{ user.end_date }}</th>
-                <th>{{ user.collaborators }}</th>
-                <th>{{ user.is_finished }}</th>
+                <th>{{ jobs[i].job }}  </th>
+                <th>{{ users[i].surname }} {{ users[i].name }}</th>
+                <th>{{ jobs[i].work_size }}</th>
+                <th>{{ jobs[i].collaborators }}</th>
+                <th style="background: #f0b9e7">{{ jobs[i].is_finished }}</th>
             </tr>
         </tbody>
     </table>
